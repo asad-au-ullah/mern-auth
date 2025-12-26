@@ -13,7 +13,12 @@ const PORT = process.env.PORT || 4000;
 
 const allowedOrigins = [process.env.CLIENT_URL];
 
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["POST", "GET", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(cookieParser());
 app.use(express.json());
 connectDB();
