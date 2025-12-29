@@ -11,7 +11,7 @@ import userRouter from './routes/user.js';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-const allowedOrigins = [process.env.CLIENT_URL];
+const allowedOrigins = process.env.CLIENT_URL;
 
 app.use(cors({
   origin: allowedOrigins,
