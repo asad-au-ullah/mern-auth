@@ -11,10 +11,22 @@ import userRouter from './routes/user.js';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-const allowedOrigins = process.env.CLIENT_URL;
+// Parse CLIENT_URL - can be a single URL string or comma-separated URLs
+const allowedOrigins = process.env.CLIENT_URL 
+  ? process.env.CLIENT_URL.split(',').map(url => url.trim())
+  : [];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ["POST", "GET", "PUT", "DELETE"],
   credentials: true
 }));
