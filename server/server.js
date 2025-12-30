@@ -33,7 +33,7 @@ app.use(cors({
 
 app.use(cookieParser());
 app.use(express.json());
-connectDB();
+await connectDB();
 
 app.get('/', (req, res) => {
   res.send('Server is running');
