@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+if (!process.env.MONGODB_URL) {
+    throw new Error("MONGODB_URL is not defined");
+}
+
 // Cache the connection to reuse it across serverless function invocations
 let cached = global.mongoose;
 
@@ -8,6 +12,11 @@ if (!cached) {
 }
 
 const connectDB = async () => {
+    // Explicitly check connection state
+    if (mongoose.connection.readyState === 1) {
+        return mongoose;
+    }
+
     // If already connected, return the existing connection
     if (cached.conn) {
         return cached.conn;
